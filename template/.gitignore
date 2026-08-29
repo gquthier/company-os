@@ -1,0 +1,24 @@
+# Secrets — every environment file carries them; one slip publishes one.
+.env
+.env.*
+!.env.example
+
+# Per-machine state: versioned, it would make another machine believe it is fresh.
+state/.machine-id
+state/last-push.txt
+state/.*.lock
+state/.*.lock.d/
+state/run-*.pid
+state/usage.json
+
+# Rolling logs: never in git (they grow to hundreds of MB and have carried secrets elsewhere).
+logs/*/live.log
+logs/*/*.out
+logs/schedule/*.log
+logs/schedule/*.err
+logs/notify.log
+
+# Local caches / OS noise
+**/__pycache__/
+.DS_Store
+.obsidian/workspace.json

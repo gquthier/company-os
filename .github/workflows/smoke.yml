@@ -1,0 +1,14 @@
+name: smoke
+on: [push, pull_request]
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: install template into a temp folder
+        run: bash install.sh /tmp/cos-ci --slug ci
+      - name: smoke test the runtime
+        run: bash /tmp/cos-ci/tests/smoke.sh
+      - name: no credential pattern in the repo
+        run: |
+          ! git grep -nE '(sk-[A-Za-z0-9_-]{16,}|xox[abp]-[A-Za-z0-9-]{10,}|gh[pousr]_[A-Za-z0-9]{20,}|AKIA[0-9A-Z]{16}|BEGIN [A-Z ]*PRIVATE KEY)' -- . ':!.github/workflows/smoke.yml' ':!template/scripts/lib.sh'
